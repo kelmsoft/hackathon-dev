@@ -2,49 +2,9 @@ import fs from 'fs/promises';
 import path from 'path';
 
 import fetch from 'cross-fetch';
+import { JUDGES } from '@/constants';
 
-const JUDGES = [
-  {
-    name: 'Pieter Levels',
-    handle: '@levelsio',
-  },
-  {
-    name: 'Logan Kilpatrick',
-    handle: '@OfficialLoganK',
-  },
-  {
-    name: 'Sara Chip',
-    handle: '@saranormous',
-  },
-  {
-    name: 'Theo',
-    handle: '@theo',
-  },
-  {
-    name: 'Evan You',
-    handle: '@youyuxi',
-  },
-  {
-    name: 'KP',
-    handle: '@thisiskp_',
-  },
-  {
-    name: 'Alex Albert',
-    handle: '@alexalbert__',
-  },
-  {
-    name: 'Ben Tossell',
-    handle: '@bentossell',
-  },
-  {
-    name: 'Exa AI Labs',
-    handle: '@ExaAILabs',
-  },
-  {
-    name: 'HSR Hackerhouse',
-    handle: '@hsrhackerhouse',
-  },
-];
+const JUDGES_DIR = 'public/judges';
 
 main().catch((err) => {
   console.error(err);
@@ -52,16 +12,7 @@ main().catch((err) => {
 });
 
 async function main() {
-  const judgesDir = path.join(__dirname, '../../public/judges');
-  await fs.mkdir(judgesDir, { recursive: true });
-
-  // Ensure judges directory exists
-  try {
-    await fs.access(judgesDir);
-  } catch (err) {
-    console.log(`Creating judges directory at ${judgesDir}`);
-    await fs.mkdir(judgesDir, { recursive: true });
-  }
+  await fs.mkdir(JUDGES_DIR, { recursive: true });
 
   console.log('Fetching profile images for judges...');
 
@@ -69,7 +20,7 @@ async function main() {
   await Promise.all(
     JUDGES.map(async (judge) => {
       const handle = judge.handle.replace('@', '');
-      const imagePath = path.join(judgesDir, `${handle}.jpg`);
+      const imagePath = path.join(JUDGES_DIR, `${handle}.jpg`);
 
       // Skip if image already exists
       try {

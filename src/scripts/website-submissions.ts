@@ -13,7 +13,7 @@ enum ScraperMode {
 
 const TWEET_URL = 'https://x.com/boltdotnew/status/1902102762151875053';
 const DATA_DIR = 'src/data';
-const UNPARSED_SUBMISSIONS_PATH = `${DATA_DIR}/unparses-submissions.json`;
+const UNPARSED_SUBMISSIONS_PATH = `${DATA_DIR}/unparsed-submissions.json`;
 const UNPARSED_SUBMISSIONS_RESULTS_PATH = `${DATA_DIR}/unparsed-submissions-results.json`;
 const SUBMISSIONS_PATH = `${DATA_DIR}/submissions.json`;
 
@@ -119,7 +119,7 @@ async function runThreadMode(browser: Browser): Promise<void> {
 }
 
 /**
- * Runs the scraper in individual mode - processes each URL from unparses-submissions.json
+ * Runs the scraper in individual mode - processes each URL from unparsed-submissions.json
  */
 async function runIndividualMode(browser: Browser): Promise<void> {
   console.log(`Reading unparsed submissions from ${UNPARSED_SUBMISSIONS_PATH}`);
