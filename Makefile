@@ -19,12 +19,12 @@ chrome:
 	$(CHROME_CMD)
 
 judges:
-	./node_modules/.bin/env-cmd ./node_modules/.bin/tsx src/scripts/judges.ts
+	npm run judges
 
 submissions:
-	./node_modules/.bin/env-cmd ./node_modules/.bin/tsx src/scripts/website-submissions.ts
+	npm run submissions
 
 individual-submissions:
-	./node_modules/.bin/env-cmd ./node_modules/.bin/tsx src/scripts/website-submissions.ts --individual
+	npm run individual-submissions
 
 .PHONY: www chrome judges submissions individual-submissions

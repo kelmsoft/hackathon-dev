@@ -10,7 +10,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "lint-node": "eslint . --ext ts,.tsx --fix && tsc --pretty --noEmit",
-    "prepare-node": "husky install"
+    "prepare-node": "husky install",
+    "judges": "env-cmd tsx src/scripts/judges.ts",
+    "submissions": "env-cmd tsx src/scripts/website-submissions.ts",
+    "individual-submissions": "env-cmd tsx src/scripts/website-submissions.ts --individual"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
