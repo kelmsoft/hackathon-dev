@@ -185,7 +185,6 @@ async function runIndividualMode(browser: Browser): Promise<void> {
 async function parseTweetElement(
   page: Page,
   tweetElement: ElementHandle<Element>,
-  alwaysReturnSubmission: boolean,
   tweetUrl?: string
 ): Promise<Submission | null> {
   try {
@@ -376,15 +375,8 @@ async function parseTweetElement(
       }
     }
 
-    // Skip tweets without either a website URL, a video URL, or an image
-    // If alwaysReturnSubmission is true, we will return a submission even if there is none of these
-    if (
-      !alwaysReturnSubmission &&
-      !websiteUrl &&
-      !videoUrl &&
-      !imageUrl &&
-      !websitePreviewImage
-    ) {
+    // Require either a website URL or a video URL
+    if (!(websiteUrl || videoUrl)) {
       return null;
     }
 
@@ -469,36 +461,31 @@ async function processSingleTweet(
       return null;
     }
 
-    // Get the last element
-    const tweetElement = tweetElements[tweetElements.length - 1];
-
-    const submission = await parseTweetElement(
-      page,
-      tweetElement,
-      true,
-      tweetUrl
-    );
-    if (submission) {
-      console.log(
-        `Found valid submission from ${submission.author} (@${submission.handle}): ${submission.websiteUrl}${
-          submission.videoUrl
-            ? `, Video: ${submission.videoUrl}`
-            : submission.image.includes('ext_tw_video_thumb')
-              ? ', Native X video with poster image'
-              : ''
-        }${
-          submission.image ? ', Image: Found' : ', Image: Not found'
-        }, Votes: ${submission.votes}`
-      );
+    for (const tweetElement of tweetElements) {
+      const submission = await parseTweetElement(page, tweetElement, tweetUrl);
+      if (submission) {
+        console.log(
+          `Found valid submission from ${submission.author} (@${submission.handle}): ${submission.websiteUrl}${
+            submission.videoUrl
+              ? `, Video: ${submission.videoUrl}`
+              : submission.image.includes('ext_tw_video_thumb')
+                ? ', Native X video with poster image'
+                : ''
+          }${
+            submission.image ? ', Image: Found' : ', Image: Not found'
+          }, Votes: ${submission.votes}`
+        );
+        return submission;
+      }
     }
-
-    return submission;
   } catch (error) {
     console.error('Error processing tweet:', error);
     return null;
   } finally {
     await page?.close();
   }
+
+  return null;
 }
 
 async function scrapeSubmissions(browser: Browser): Promise<Submission[]> {
@@ -565,7 +552,7 @@ async function scrapeSubmissions(browser: Browser): Promise<Submission[]> {
 
       for (const tweetElement of tweetElements) {
         try {
-          const submission = await parseTweetElement(page, tweetElement, false);
+          const submission = await parseTweetElement(page, tweetElement);
           if (!submission || processedTweetIds.has(submission.tweetUrl)) {
             continue;
           }

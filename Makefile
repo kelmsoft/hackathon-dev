@@ -21,4 +21,7 @@ judges:
 submissions:
 	./node_modules/.bin/env-cmd ./node_modules/.bin/tsx src/website-submissions.ts
 
-.PHONY: chrome judges submissions
+individual-submissions:
+	./node_modules/.bin/env-cmd ./node_modules/.bin/tsx src/website-submissions.ts --individual
+
+.PHONY: chrome judges submissions individual-submissions
