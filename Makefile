@@ -11,17 +11,20 @@ else
 		CHROME_CMD = start chrome --remote-debugging-port=7572
 endif
 
+www:
+	@npm run dev -- --port 3636
+
 # Target to open Chrome
 chrome:
 	$(CHROME_CMD)
 
 judges:
-	./node_modules/.bin/env-cmd ./node_modules/.bin/tsx src/judges.ts
+	./node_modules/.bin/env-cmd ./node_modules/.bin/tsx src/scripts/judges.ts
 
 submissions:
-	./node_modules/.bin/env-cmd ./node_modules/.bin/tsx src/website-submissions.ts
+	./node_modules/.bin/env-cmd ./node_modules/.bin/tsx src/scripts/website-submissions.ts
 
 individual-submissions:
-	./node_modules/.bin/env-cmd ./node_modules/.bin/tsx src/website-submissions.ts --individual
+	./node_modules/.bin/env-cmd ./node_modules/.bin/tsx src/scripts/website-submissions.ts --individual
 
-.PHONY: chrome judges submissions individual-submissions
+.PHONY: www chrome judges submissions individual-submissions

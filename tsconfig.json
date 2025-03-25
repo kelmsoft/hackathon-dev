@@ -1,29 +1,19 @@
 {
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
   "compilerOptions": {
     "baseUrl": ".",
-    "declaration": true,
-    "target": "es2015",
-    "module": "commonjs",
-    "strict": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "noImplicitAny": false,
-    "skipLibCheck": true,
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["./src/*"]
     },
+    "noImplicitAny": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true,
     "allowJs": true,
-    "downlevelIteration": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "include": [
-    "src",
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "noUnusedLocals": false,
+    "strictNullChecks": false
+  }
 }

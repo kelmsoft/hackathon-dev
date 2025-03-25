@@ -12,10 +12,10 @@ enum ScraperMode {
 }
 
 const TWEET_URL = 'https://x.com/boltdotnew/status/1902102762151875053';
-const UNPARSED_SUBMISSIONS_PATH = path.join(
-  __dirname,
-  'data/unparses-submissions.json'
-);
+const DATA_DIR = 'src/data';
+const UNPARSED_SUBMISSIONS_PATH = `${DATA_DIR}/unparses-submissions.json`;
+const UNPARSED_SUBMISSIONS_RESULTS_PATH = `${DATA_DIR}/unparsed-submissions-results.json`;
+const SUBMISSIONS_PATH = `${DATA_DIR}/submissions.json`;
 
 type Submission = {
   author: string;
@@ -45,7 +45,7 @@ main()
   });
 
 async function main() {
-  await fs.mkdir(path.join(__dirname, './data'), { recursive: true });
+  await fs.mkdir(DATA_DIR, { recursive: true });
 
   let browser: Browser | null = null;
 
@@ -106,11 +106,10 @@ async function runThreadMode(browser: Browser): Promise<void> {
     const submissions = await scrapeSubmissions(browser);
 
     // Save submissions to a JSON file
-    const outputPath = path.join(__dirname, 'data/submissions.json');
-    await fs.writeFile(outputPath, JSON.stringify(submissions, null, 2));
+    await fs.writeFile(SUBMISSIONS_PATH, JSON.stringify(submissions, null, 2));
 
     console.log(`Found ${submissions.length} valid submissions`);
-    console.log(`Submissions saved to ${outputPath}`);
+    console.log(`Submissions saved to ${SUBMISSIONS_PATH}`);
 
     // Write submissions to Supabase
     await writeSubmissionsToSupabase(submissions);
@@ -170,15 +169,14 @@ async function runIndividualMode(browser: Browser): Promise<void> {
   }
 
   // Save all submissions to a JSON file
-  const outputPath = path.join(
-    __dirname,
-    'data/unparsed-submissions-results.json'
+  await fs.writeFile(
+    UNPARSED_SUBMISSIONS_RESULTS_PATH,
+    JSON.stringify(submissions, null, 2)
   );
-  await fs.writeFile(outputPath, JSON.stringify(submissions, null, 2));
 
   console.log(`Processed ${processedCount}/${unparsedUrls.length} URLs`);
   console.log(`Found ${submissions.length} valid submissions`);
-  console.log(`Results saved to ${outputPath}`);
+  console.log(`Results saved to ${UNPARSED_SUBMISSIONS_RESULTS_PATH}`);
 }
 
 // First, add this new shared function

@@ -52,8 +52,8 @@ main().catch((err) => {
 });
 
 async function main() {
-  await fs.mkdir(path.join(__dirname, './data'), { recursive: true });
-  const judgesDir = path.join(__dirname, './data/judges');
+  const judgesDir = path.join(__dirname, '../../public/judges');
+  await fs.mkdir(judgesDir, { recursive: true });
 
   // Ensure judges directory exists
   try {
